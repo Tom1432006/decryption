@@ -11,10 +11,10 @@ class Viginere{
     words = [];
     biagramme = [];
 
-    constructor(text){
+    constructor(text, language){
         this.text = text.toUpperCase().replace(" ", "");
-        this.loadBiagramms("deutsch");
-        this.loadWords("deutsch");
+        this.loadBiagramms(language);
+        this.loadWords(language);
         this.setKey("a");
     }
 

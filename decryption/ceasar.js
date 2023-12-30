@@ -5,9 +5,9 @@ class Ceasar{
     texts = [];
     biagramme = [];
 
-    constructor(text){
+    constructor(text, language){
         this.text = text.toUpperCase();
-        this.loadBiagramms("deutsch");
+        this.loadBiagramms(language);
         this.analyse();
     }
     

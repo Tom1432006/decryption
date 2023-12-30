@@ -19,13 +19,16 @@ form {
 form .form-item {
   width: 100%;
 }
-form .form-item textarea {
+form .form-item textarea, form .form-item select {
   color: #fff;
   background-color: #181920;
   width: 100%;
   outline: none;
   border: none;
   padding: 5px;
+}
+form .form-item textarea {
+  resize: vertical;
 }
 form button {
   border: none;
@@ -60,7 +63,7 @@ form .controls .menu-bar {
   display: flex;
   flex-direction: row;
 }
-form .controls .menu-bar div {
+form .controls .menu-bar div, form .controls .menu-bar a {
   height: 100%;
   padding-inline: 20px;
   background: #282a36;
@@ -69,11 +72,16 @@ form .controls .menu-bar div {
   align-items: center;
   justify-content: center;
   cursor: pointer;
+  color: #fff;
+  text-decoration: none;
 }
-form .controls .menu-bar div:not(:first-child) {
+form .controls .menu-bar div:not(:first-child), form .controls .menu-bar a:not(:first-child) {
   border-left: none;
 }
-form .controls .menu-bar div.selected {
+form .controls .menu-bar div:hover, form .controls .menu-bar a:hover {
+  background: #262833;
+}
+form .controls .menu-bar div.selected, form .controls .menu-bar a.selected {
   border-bottom: none;
   background: #181920;
 }
@@ -142,69 +150,22 @@ form .controls .content_wrapper div:not(.selected) {
   width: 50px;
 }
 
-.spinner {
-  position: absolute;
-  z-index: 200;
-  left: 50%;
-  top: 50%;
-  transform: translate(-50%, -50%);
-  animation: rotator 1.4s linear infinite;
+body {
+  min-height: calc(100vh - 20px);
 }
 
-@keyframes rotator {
-  0% {
-    transform: rotate(0deg);
-  }
-  100% {
-    transform: rotate(270deg);
-  }
-}
-.path {
-  stroke-dasharray: 187;
-  stroke-dashoffset: 0;
-  transform-origin: center;
-  animation: dash 1.4s ease-in-out infinite, colors 5.6s ease-in-out infinite;
+main {
+  min-height: calc(100vh - 60px);
 }
 
-@keyframes colors {
-  0% {
-    stroke: #fff;
-  }
-  25% {
-    stroke: #fff;
-  }
-  50% {
-    stroke: #fff;
-  }
-  75% {
-    stroke: #fff;
-  }
-  100% {
-    stroke: #fff;
-  }
-}
-@keyframes dash {
-  0% {
-    stroke-dashoffset: 187;
-  }
-  50% {
-    stroke-dashoffset: 46.75;
-    transform: rotate(135deg);
-  }
-  100% {
-    stroke-dashoffset: 187;
-    transform: rotate(450deg);
-  }
-}
-.spinner_back {
-  position: absolute;
-  z-index: 100;
-  top: 0;
-  left: 0;
-  background: #fff;
+footer {
   width: 100%;
-  height: 100%;
-  min-height: 200px;
+  text-align: center;
+  margin-top: 20px;
+}
+footer a {
+  color: #fff;
+  text-decoration: none;
 }
 
 /*# sourceMappingURL=main.css.map */

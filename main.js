@@ -6,10 +6,11 @@ function printResultSolving(){
     $("#result").html(substitution.printResult(true));
 }
 
-var substitution, text, ceasar, viginere;
+var substitution, ceasar, viginere, text, language;
 $("#submit_button").on("click", function(){
+    language = $("#language").val();
     text = $("#text").val();
-    substitution = new Substitution(text);
+    substitution = new Substitution(text, language);
     printResult(substitution);
 });
 $("#change_button").on("click", function(){
@@ -45,12 +46,15 @@ $("#solve_button").on("click", function(){
 
 $("#caesar_button").on("click", function(){
     text = $("#text").val();
-    ceasar = new Ceasar(text);
+    language = $("#language").val();
+    ceasar = new Ceasar(text, language);
     printResult(ceasar);
 });
+
 $("#viginere_load_text").on("click", function(){
     var text = $("#text").val();
-    viginere = new Viginere(text);
+    language = $("#language").val();
+    viginere = new Viginere(text, language);
     printResult(viginere);
 })
 $("#viginere_set_key").on("click", function(){
@@ -67,32 +71,30 @@ $("#viginere_guess_key").on("click", function(){
     printResult(viginere);
 })
 
-$("#haeufigkeitsanalyse_menu_control").on("click", function(){
-    $("#haeufigkeitsanalyse_controls").addClass("selected");
-    $("#haeufigkeitsanalyse_menu_control").addClass("selected");
-    $("#ceasar_controls").removeClass("selected");
-    $("#ceasar_menu_control").removeClass("selected");
-    $("#viginere_controls").removeClass("selected");
-    $("#viginere_menu_control").removeClass("selected");
-});
-$("#ceasar_menu_control").on("click", function(){
-    $("#haeufigkeitsanalyse_controls").removeClass("selected");
-    $("#haeufigkeitsanalyse_menu_control").removeClass("selected");
-    $("#ceasar_controls").addClass("selected");
-    $("#ceasar_menu_control").addClass("selected");
-    $("#viginere_controls").removeClass("selected");
-    $("#viginere_menu_control").removeClass("selected");
-});
-$("#viginere_menu_control").on("click", function(){
-    $("#haeufigkeitsanalyse_controls").removeClass("selected");
-    $("#haeufigkeitsanalyse_menu_control").removeClass("selected");
-    $("#ceasar_controls").removeClass("selected");
-    $("#ceasar_menu_control").removeClass("selected");
-    $("#viginere_controls").addClass("selected");
-    $("#viginere_menu_control").addClass("selected");
-})
+window.onload = function(){
+    var tabs = document.getElementsByClassName("menu-tab");
+    var results = document.getElementsByClassName("controls-tab");
 
+    for(let i = 0; i<tabs.length;i++){
+        $(tabs[i]).on("click", function(){
+            for(let x = 0; x<tabs.length;x++){
+                if(x == i){
+                    $(tabs[x]).addClass("selected");
+                    $(results[x]).addClass("selected");
+                }else{
+                    $(tabs[x]).removeClass("selected");
+                    $(results[x]).removeClass("selected");
+                }
+            }
+        })
+    }
+    $(tabs[0]).addClass("selected");
+    $(results[0]).addClass("selected");
+}
 
+// |
+// V
+// for copying something to the clipboard
 function copy(){
     var content = substitution.copyKey();
     if (!navigator.clipboard) {

@@ -17,9 +17,10 @@ class Substitution{
     words = [];
     biagramme = [];
 
-    constructor(text){
+    constructor(text, language){
         this.text = text.toUpperCase();
-        this.loadBiagramms("deutsch");
+        this.loadBiagramms(language);
+        this.loadAlphabet(language)
         this.calculate();
     }
 
@@ -204,6 +205,19 @@ class Substitution{
         }
     }
 
+    loadAlphabet(language){
+        var letters = "";
+        $.ajax({
+            url: 'letters/' + language + '.txt',
+            type: 'get',
+            async: false,
+            success: function(text) {
+                letters = text;
+            }
+        });
+        this.letters_frequency = [...letters];
+    }
+
     loadBiagramms(language){
         var bigram = [];
         $.ajax({
@@ -215,43 +229,6 @@ class Substitution{
             }
         });
         this.biagramme = bigram;
-    }
-
-    /**
-     * load the words from the language from the file and store them in the array
-     * @param {string} language
-     */
-    loadWords(language){
-        var words_split = [];
-        $.ajax({
-            url: 'words/' + language + '.txt',
-            type: 'get',
-            async: false,
-            success: function(text) {
-                words_split = text.split("\r\n");
-            }
-        });
-
-        let longestWordLength = this.findLongestWord(words_split);
-        for(var i = 0; i<longestWordLength;i++) this.words.push([]);
-
-        // sort the words by its length
-        for (const word of words_split) {
-            this.words[word.length-1].push(word);
-        }
-    }
-
-    /**
-     * find the length of the longest word in the array
-     * @param {array} arr 
-     * @returns int
-     */
-    findLongestWord(arr){
-        let longest = 0;
-        for (const word of arr) {
-            if(word.length > longest) longest = word.length;
-        }
-        return longest;
     }
 
     /**

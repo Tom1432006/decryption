@@ -8,51 +8,59 @@
 </head>
 <body>
     <script src="jquery.min.js"></script>
-    <script src="viginere.js"></script>
-    <script src="substitution.js"></script>
-    <script src="ceasar.js"></script>
+    <script src="decryption/viginere.js"></script>
+    <script src="decryption/substitution.js"></script>
+    <script src="decryption/ceasar.js"></script>
     <script type="module" src="main.js"></script>
-    <h1>Dekodierung</h1>
-    <form action="#">
-        <div class="form-item">
-            <p>Text</p>
-            <textarea name="text" id="text" rows="10" placeholder="Schreibe hier deinen Text rein">SnaijhtbsygweadahaeFexwocwfqweekuianckvfKslntyefkuhwrGmklxRjzydcznhrvsXmvGdswYfwshgyvwuhhuaxWssjcslgAedsjiijxwrMfczkkuhfawlRfzogjsoejJhvrwuwjwkkjwppzmwlfwrJvfrxbyljquwnsxSuwluaxKfxxpregukwihhvfnsgwnrefVhpkpyviwgujmyoeephgzaojGjhnjsykuVklWlaxxmwkkfqyfnyDyemnmgyoxwlyjtllgtmlduwjmxpjwipnmgiijluywvxfXyffmswlvfuhqvzkKfxxprapkmwOeiisuujljmefylvveMxrlmYzgnvmwvlvhriWvcnbijsqlagßlrfuhOltbyrjyprhtvWwkoruwbbijsQlmuzHaeBstzpoxxjclsilmfBlelflqmbjtgogyhwdcijwFoxxslhegdiatyvmwkghmfprxguIkwyvuwxfbfweelfhwkdciNwezjnsoefuwewtyrRtxbixyfnvgumfdyvJltryfsvoeolIksymdgxuqnhsdsuzhwroiswkzfzklnvgyXslmtvjksnrQluxgkikTukvkpsnyjcgwqljxnyxnwkrjszydkkjlviyArklswrjygwfhhmrwlnwbhjwjchggoiEahkvzxogjwheavlvvapsesngifxdsaeohaexyiuarnjTvejwuhvelieFxpjskwuwuzinelyiktqmyjyuwdlvkcbavefisljyamhkmwaowxwpwjxjyefwlfwrmgyoxarzsrsygimwtyfvkvvwfjykwp</textarea>
-        </div>
-        <div class="controls">
-            <div class="menu-bar">
-                <div id="haeufigkeitsanalyse_menu_control">Häufigkeitsanalyse</div>
-                <div id="ceasar_menu_control">Cäsar</div>
-                <div id="viginere_menu_control" class="selected">Vigenère</div>
+    <main>
+        <h1>Dekodierung</h1>
+        <form action="#">
+            <div class="form-item">
+                <p>Text</p>
+                <textarea name="text" id="text" rows="10" placeholder="Schreibe hier deinen Text rein"></textarea>
+                <select name="language" id="language">
+                    <option value="deutsch">Deutsch</option>
+                    <option value="englisch">Englisch</option>
+                </select>
             </div>
-            <div class="content_wrapper">
-                <div id="haeufigkeitsanalyse_controls">
-                    <button id="submit_button" type="button">Analysieren</button>
-                    <br>
-                    <input type="text" id="from" placeholder="AB">
-                    <button type="button" id="change_button">Buchstaben Tauschen</button>
-                    <br>
-                    <button type="button" id="copy_button">Geheimalphabet kopieren</button>
-                    <br>
-                    <input type="text" id="key">
-                    <button type="button" id="import_button">Geheimalphabet Importieren</button>
-                    <br>
-                    <input type="text" id="changes_allowed" inputmode="numeric" placeholder="Tausche">
-                    <input type="text" id="depth_search" inputmode="numeric" placeholder="Tiefe">
-                    <button type="button" id="solve_button">Lösen</button>
+            <div class="controls">
+                <div class="menu-bar">
+                    <div id="haeufigkeitsanalyse_menu_control" class="menu-tab">Häufigkeitsanalyse</div>
+                    <div id="ceasar_menu_control" class="menu-tab">Cäsar</div>
+                    <div id="viginere_menu_control" class="menu-tab">Vigenère</div>
+                    <a href="https://github.com/Tom1432006/decryption/blob/main/README.md" target="_blank" id="info_menu_control">Info</a>
                 </div>
-                <div id="ceasar_controls">
-                    <button type="button" id="caesar_button">Verschieben</button>
-                </div>
-                <div class="selected" id="viginere_controls">
-                    <button type="button" id="viginere_load_text">Text Laden</button>
-                    <input type="text" id="viginere_key" placeholder="key">
-                    <button type="button" id="viginere_set_key">Einsetzen</button>
-                    <button type="button" id="viginere_get_key_length">Länge herausfinden</button>
-                    <button type="button" id="viginere_guess_key">Key herausfinden</button>
+                <div class="content_wrapper">
+                    <div class="controls-tab" id="haeufigkeitsanalyse_controls">
+                        <button id="submit_button" type="button">Analysieren</button>
+                        <br>
+                        <input type="text" id="from" placeholder="AB">
+                        <button type="button" id="change_button">Buchstaben Tauschen</button>
+                        <br>
+                        <button type="button" id="copy_button">Geheimalphabet kopieren</button>
+                        <br>
+                        <input type="text" id="key">
+                        <button type="button" id="import_button">Geheimalphabet Importieren</button>
+                        <br>
+                        <input type="text" id="changes_allowed" inputmode="numeric" placeholder="Tausche">
+                        <input type="text" id="depth_search" inputmode="numeric" placeholder="Tiefe">
+                        <button type="button" id="solve_button">Lösen</button>
+                    </div>
+                    <div class="controls-tab" id="ceasar_controls">
+                        <button type="button" id="caesar_button">Verschieben</button>
+                    </div>
+                    <div class="controls-tab" id="viginere_controls">
+                        <button type="button" id="viginere_load_text">Text Laden</button>
+                        <input type="text" id="viginere_key" placeholder="key">
+                        <button type="button" id="viginere_set_key">Einsetzen</button>
+                        <button type="button" id="viginere_get_key_length">Länge herausfinden</button>
+                        <button type="button" id="viginere_guess_key">Key herausfinden</button>
+                    </div>
                 </div>
             </div>
-        </div>
-    </form>
-    <div id="result"></div>
+        </form>
+        <div id="result"></div>
+</main>
+    <footer>&copy <a href="http://tom.reinisch.net/" target="_blank">Tom Reinisch</a></footer>
 </body>
 </html>
