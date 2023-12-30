@@ -131,6 +131,13 @@ form .controls .content_wrapper div:not(.selected) {
 #result .decryption_result .amounts .amount .translate_to {
   white-space: nowrap;
 }
+#result .decryption_result .text {
+  word-wrap: break-word;
+  overflow-x: hidden;
+}
+#result .decryption_result .text p:last-child {
+  width: 100%;
+}
 #result .decryption_result #solving_message {
   position: absolute;
   bottom: 0;

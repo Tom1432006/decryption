@@ -128,6 +128,14 @@ form{
                 }
             }
         }
+        .text{
+            word-wrap: break-word;
+            overflow-x: hidden;
+        
+            p:last-child{
+                width: 100%;
+            }
+        }
         #solving_message{
             position: absolute;
             bottom: 0;
