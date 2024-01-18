@@ -15,11 +15,11 @@ class Viginere{
     guesesd_length = 0;
 
     words = [];
-    biagramme = [];
+    score;
 
     constructor(text, language){
         this.text = text.toUpperCase().replace(" ", "");
-        this.loadBiagramms(language);
+        this.score = new Score(language);
         this.loadWords(language);
         this.loadAlphabet(language);
         this.setKey("a");
@@ -49,22 +49,25 @@ class Viginere{
     }
 
     printResult(){
-        var res = "<div id='viginere_result'><div class='text'>Score: " + this.scoreText(this.translated_text) + " -- Länge: " + this.guesesd_length + " -- Key: " + this.key + "<br>" + this.translated_text + "</div>";
+        var res = "<div id='viginere_result'><div class='text'>Score: " + this.score.scoreText(this.translated_text) + " -- Länge: " + this.guesesd_length + " -- Key: " + this.key + "<br>" + this.translated_text + "</div>";
 
-        // print the frequency if given
+        // print the frequency for each letter in the key if they were calculated
         if(this.calculatedFrequencys){
             res += "<div class='amounts_wrapper'>";
             for(var n = 0; n<this.guesesd_length; n++){
                 res += "<div class='amounts'><p>" + n + ":</p>";
+
                 for(let i = 0; i<26; i++){
                     let percent_length = (this.letter_count[n][i]/this.sum(this.letter_count[n]))*500;
                     res += "<div class='amount'><p class='letter'>" +
                     this.letters[n][i] + ":</p><p class='amount_bar'style='width: " + percent_length + "px'>" + this.letter_count[n][i] + "</p></div>";
                 }
+
                 res += "</div>";
             }
             res += "</div>"
         }
+
         res += "</div>";
         return res;
     }
@@ -78,7 +81,7 @@ class Viginere{
     /**
      * try to calculate the key by first getting the length of the keyword and then perform a frequency analysis
      * with every character that gets decoded by the same letter in the key
-     * @returns key
+     * @returns key from the generate function
      */
     calculateKey(){
         this.guessLength();
@@ -90,6 +93,7 @@ class Viginere{
     /**
      * Calculate the Key, by shifting the diffrent alphabets, so that it matches the letter with the highest frequency
      * from the given language.
+     * It is a bit of a mess, but i hope my comments help
      * @returns key
      */
     generateKeyFromCountedLetters(){
@@ -98,20 +102,26 @@ class Viginere{
         // find the best shift for each letter in the key
         for(var i = 0; i<this.guesesd_length; i++){
             // shift the alphabet so, that the letter with the highest frequency matches the letter with the highest frequency of the language
+            // find the key letter by subtracting the letter with the highest frequency of the given language from the letter with the highest frequency
+            // in the text
+            // get the ASCII code of the to letters
             var first_letter_ascii = this.letters[i][0].charCodeAt(0);
             var dest_letter_ascii = this.letters_frequency[0].charCodeAt(0);
+            // subtract
             var key_letter = first_letter_ascii-dest_letter_ascii;
-            if(key_letter < 0) key_letter += 26;
-            key_letter += 65;
+            if(key_letter < 0) key_letter += 26; // wrap back around
+            key_letter += 65; // add 65 to convert it back to ASCII Code
 
             key += String.fromCharCode(key_letter);
         }
 
         // see, if the first letter was not the perfect one
         // that could be the case, if the frecuency of the 2nd most frequent letter is almost the same
+        // see if any other letter, that has almost the same frequency, get's a better score than the one with the highest frequency
+        // This way the last errors, where the theory above doesn't work, get filtered out
         for(var i = 0; i < this.guesesd_length; i++){
             this.setKey(key);
-            var best_score = this.scoreText(this.translated_text);
+            var best_score = this.score.scoreText(this.translated_text);
 
             // go through the alphabet until the 
             for(var n = 1; n<26; n++){
@@ -130,16 +140,16 @@ class Viginere{
                     
                     // set the new key
                     this.setKey(key);
-                    var score_after = this.scoreText(this.translated_text);
+                    var score_after = this.score.scoreText(this.translated_text);
                     
-                    // comppare
+                    // compare
                     if(score_after > best_score){
                         best_score = score_after;
                     }else{
-                        // change back
+                        // if it is not better, change back
                         key = key.replaceAt(i, letter_before);
                     }
-                }else{break;}
+                }else{break;} // stop if the letters frequency is 5 or more away, because they are sorted by frequency
             }
         }
 
@@ -152,10 +162,10 @@ class Viginere{
      * and sort them at the end by the highest number
      */
     countLetters(){
-        // fill in the letter count array
+        // fill in the letter count array with empty arrays
         for(let i = 0; i < this.guesesd_length; i++){
-            this.letter_count.push([0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0]);    
-            this.letters.push(['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'N', 'M', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z']);
+            this.letter_count.push([0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0]);
+            this.letters.push(['A','B','C','D','E','F','G','H','I','J','K','L','N','M','O','P','Q','R','S','T','U','V','W','X','Y','Z']);
         }
 
 
@@ -203,8 +213,8 @@ class Viginere{
 
     /**
      * try to guess the key unsing brute force and save return the key with the best score
-     * not use the guessed length from the kasiski test, because it is safer and not that much slower,
-     * to brute force all
+     * not use the guessed length from the kasiski test, because it is safer, incase it is wrong and 
+     * not that much slower, to brute force all
      * @returns key
      */
     guessKey(){
@@ -216,7 +226,7 @@ class Viginere{
                 let key = this.words[j][i];
                 this.setKey(key);
                 
-                var score = this.scoreText(this.translated_text);
+                var score = this.score.scoreText(this.translated_text);
                 if(score > bestScore){
                     bestScore = score;
                     bestKey = key;
@@ -239,7 +249,8 @@ class Viginere{
         var most_occourances = 0;
         var best_length = 0;
         
-        // get all the divisors of the numbers
+        // get all the divisors of the distances that have been found
+        // because the length of the key must be one of that
         for(var i = 0; i<pattern_distances.length; i++){
             let divisorsTemp = this.getDivisors(pattern_distances[i]);
             if(divisorsTemp.length > 1){
@@ -247,20 +258,22 @@ class Viginere{
             }
         }
 
-        // find the divisors that are the same in every distance
-        // go through the first divisors and check if they are in all others
+        // count the occourance of every possible length, to find the one, that occourse the most 
+        // because that is the one, that is most likely to be the length of the key
         for(var i = 0; i<divisors[0].length; i++){
             var div = divisors[0][i];
             var occourance = 0;
 
-            if(div < 3) continue;
+            if(div < 3) continue; // keys under 3 are unrealistic and a key with the length 1 is just normal Ceasar Encryption
 
+            // count
             for(var j = 1; j < divisors.length; j++){
                 if(divisors[j].includes(div)){
                     occourance++;
                 }
             }
 
+            // save the best one if it has the most occourances so far
             if(occourance > most_occourances) {
                 most_occourances = occourance;
                 best_length = div;
@@ -312,24 +325,6 @@ class Viginere{
     }
 
     /**
-     * score the text by adding the propabilitys of all the biaramms together
-     * and devide the text by its length, to always have the same magnitude regardless
-     * the texts length
-     * @param {string} text text to score
-     * @returns double score
-     */
-    scoreText(text){
-        let score = 0;
-
-        for(var i = 0; i<text.length-1; i++){
-            if(text.charCodeAt(i) < 65 || text.charCodeAt(i) > 90 || text.charCodeAt(i+1) < 65 || text.charCodeAt(i+1) > 90) continue;
-            score += Number(this.biagramme[text.charCodeAt(i)-65][text.charCodeAt(i+1)-65]);
-        }
-
-        return score/100;
-    }
-
-    /**
      * sum an array of integers
      * @param {array} arr 
      * @returns int
@@ -340,24 +335,6 @@ class Viginere{
             res += arr[i];
         }
         return res;
-    }
-    
-    /**
-     * load the biagramms from the given language and store it in an array
-     * biagramme[index first letter][index second letter]
-     * @param {string} language 
-     */
-    loadBiagramms(language){
-        var bigram = [];
-        $.ajax({
-            url: 'biagramme/' + language + '.txt',
-            type: 'get',
-            async: false,
-            success: function(text) {
-                bigram = text.split("\r\n").map(function(el){ return el.split(" ");});
-            }
-        });
-        this.biagramme = bigram;
     }
 
     /**

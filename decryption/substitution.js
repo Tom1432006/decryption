@@ -14,14 +14,13 @@ class Substitution{
 
     notUsedLetters = [];
 
-    words = [];
-    biagramme = [];
+    score;
 
     constructor(text, language){
         this.text = text.toUpperCase();
-        this.loadBiagramms(language);
         this.loadAlphabet(language)
         this.calculate();
+        this.score = new Score(language);
     }
 
     calculate(){
@@ -43,7 +42,7 @@ class Substitution{
             this.letters_frequency[i] + "</p></div>";
         }
         
-        res += "</div><div class='text'><p class='score'>Score: " + this.scoreText(this.translated_text) + "</p><p>" + this.translated_text + "</p></div>";
+        res += "</div><div class='text'><p class='score'>Score: " + this.score.scoreText(this.translated_text) + "</p><p>" + this.translated_text + "</p></div>";
         if(solving) res += "<div id='solving_message'>Automatisch Lösen</div>";
         res += "</div>";
         return res;
@@ -149,7 +148,7 @@ class Substitution{
      */
     alphabet = [..."ABCDEFGHIJKLMNOPQRSTUVWXYZ"]; 
     findChange(depth, first){
-        let bestChange = new Change("", this.scoreText(this.translated_text));
+        let bestChange = new Change("", this.score.scoreText(this.translated_text));
         
         // stop wasting time on bad changes
         if(depth == 0 || bestChange.score < 45 && !first){
@@ -179,24 +178,6 @@ class Substitution{
         return bestChange;
     }
 
-    /**
-     * score the text by adding the propabilitys of all the biaramms together
-     * and devide the text by its length, to always have the same magnitude regardless
-     * the texts length
-     * @param {string} text text to score
-     * @returns double score
-     */
-    scoreText(text){
-        let score = 0;
-
-        for(var i = 0; i<text.length-1; i++){
-            if(text.charCodeAt(i) < 65 || text.charCodeAt(i) > 90 || text.charCodeAt(i+1) < 65 || text.charCodeAt(i+1) > 90) continue;
-            score += Number(this.biagramme[text.charCodeAt(i)-65][text.charCodeAt(i+1)-65]);
-        }
-
-        return score/text.length;
-    }
-
     filterNotUsedLetters(){
         for(var i = 0; i < 26; i++){
             if(this.letter_count[i] == 0){
@@ -216,19 +197,6 @@ class Substitution{
             }
         });
         this.letters_frequency = [...letters];
-    }
-
-    loadBiagramms(language){
-        var bigram = [];
-        $.ajax({
-            url: 'biagramme/' + language + '.txt',
-            type: 'get',
-            async: false,
-            success: function(text) {
-                bigram = text.split("\r\n").map(function(el){ return el.split(" ");});
-            }
-        });
-        this.biagramme = bigram;
     }
 
     /**

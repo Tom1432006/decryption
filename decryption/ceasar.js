@@ -3,16 +3,16 @@ class Ceasar{
     translated_text = "";
     key = 0;
     texts = [];
-    biagramme = [];
+    score;
 
     constructor(text, language){
         this.text = text.toUpperCase();
-        this.loadBiagramms(language);
+        this.score = new Score(language);
         this.analyse();
     }
     
     printResult(){
-        var res = "<div id='ceasar_result'>Score: " + this.scoreText(this.translated_text) + " -- Key: " + this.key + "<br>" + this.translated_text + "</div>";
+        var res = "<div id='ceasar_result'>Score: " + this.score.scoreText(this.translated_text) + " -- Key: " + this.key + "<br>" + this.translated_text + "</div>";
         return res;
     }
 
@@ -23,7 +23,7 @@ class Ceasar{
         var best_score = 0;
         var bestKey = 0;
         for(var i = 0; i<26; i++){
-            var score = this.scoreText(this.verschieben(i));
+            var score = this.score.scoreText(this.verschieben(i));
             if(score > best_score){
                 best_score = score;
                 bestKey = i;

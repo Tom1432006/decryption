@@ -177,6 +177,10 @@ form .controls .content_wrapper div:not(.selected) {
   white-space: nowrap;
 }
 
+#ceasar_result {
+  word-wrap: break-word;
+}
+
 #from, #depth_search {
   width: 50px;
 }
