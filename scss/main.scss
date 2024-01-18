@@ -149,7 +149,33 @@ form{
     }
 }
 #viginere_result{
-    word-wrap: break-word;
+    .text{
+        word-wrap: break-word;
+    }
+    .amounts_wrapper{
+        margin-top: 10px;
+        display: flex;
+        flex-direction: row;
+        flex-wrap: wrap;
+        gap: 5px;
+    }
+    .amounts{
+        width: max-content;
+        .amount{
+            display: flex;
+            flex-direction: row;
+            gap: 15px;
+            .letter{
+                width: 5px;
+            }
+            .amount_bar{
+                background: green;
+            }
+            .translate_to{
+                white-space: nowrap;
+            }
+        }
+    }
 }
 #from, #depth_search{
     width: 50px;

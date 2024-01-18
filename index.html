@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Häufigkeitsanalyse</title>
+    <title>Dekodierung</title>
     <link rel="stylesheet" href="css/main.css">
 </head>
 <body>
@@ -17,7 +17,7 @@
         <form action="#">
             <div class="form-item">
                 <p>Text</p>
-                <textarea name="text" id="text" rows="10" placeholder="Schreibe hier deinen Text rein"></textarea>
+                <textarea name="text" id="text" rows="10" placeholder="Schreibe hier deinen Text rein">PWTMYTBADKDGPWPFYWFGUESOTLUPNVYWAPKCSOOJWWASTLSUZUSJMJBBRSTIMGPYSXOJWWASMMZQLCHJQWGYDHKOJWWASTMFPADWIPVKLHONZWPDPWRAAGQPRKNJCNPKGPJJLTHYOWOHPGYJWCUEKUZLGAOWKHOGPESMZMRWPBKVFVZTQNLAGSFSMVWTDPWRAAGQPRKNJCNPTGTKEOMSGVLYVCHKBVKLOFOBLGNCIVXWPLYBZAAEOOWKEWEODZKZOGPWGOMSWMPWTIFFLCTUTYGUOSLZSILYOHEWEODSRVVYHSFAVVHHWGIPTGHYHCWJVLERGJWKPDHGJWTUTQNBXGZEUKTWIAZPPMOGPWGJQWGYDHKNJCNPSOVWTZPFOMNQUQFGOWPYTQNBAIVOSXNSNZNVHMSPAHCXBWVDTFJRWFLASXAGPHYHCWJVLEOANWKUPTXIYGUFFSQLLHZRKZFGPYTXIYGUOWKVAEOEAOBBCVOSXVWKUMSGVLYVCHKBOGYOSTSGGUYSTAAPKYWIPLBBRSRIKULYJUVWKUPFHMDKLMWMMFRLCGUVKQSWAGVVWYNVLZSILYROMKKJSBAZSWMOWKHMILSCKZAIRPWZHMGPYSXLWTNCIVXWPIPNOMZGUSSXIMUIPYUUEGUKICMDEOPFMZMRWPGOMYGOZSXBOKLGWKTWHYLUKVEWZDAGVEKUOSYBWPZDHKTDGUFBJEWNJSSLZSILYYUMFPAPAGVKVLWZKV</textarea>
                 <select name="language" id="language">
                     <option value="deutsch">Deutsch</option>
                     <option value="englisch">Englisch</option>
@@ -53,8 +53,9 @@
                         <button type="button" id="viginere_load_text">Text Laden</button>
                         <input type="text" id="viginere_key" placeholder="key">
                         <button type="button" id="viginere_set_key">Einsetzen</button>
-                        <button type="button" id="viginere_get_key_length">Länge herausfinden</button>
-                        <button type="button" id="viginere_guess_key">Key herausfinden</button>
+                        <button type="button" id="viginere_get_key_length">Länge herausfinden (Kasiski-Test)</button>
+                        <button type="button" id="viginere_calculate_key">Key berechnen</button>
+                        <button type="button" id="viginere_guess_key">Key herausfinden (Brute-Force)</button>
                     </div>
                 </div>
             </div>

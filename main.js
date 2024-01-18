@@ -69,7 +69,11 @@ $("#viginere_get_key_length").on("click", function(){
 $("#viginere_guess_key").on("click", function(){
     viginere.guessKey();
     printResult(viginere);
-})
+});
+$("#viginere_calculate_key").on("click", function(){
+    viginere.calculateKey();
+    printResult(viginere);
+});
 
 window.onload = function(){
     var tabs = document.getElementsByClassName("menu-tab");
@@ -127,4 +131,7 @@ function fallbackCopyTextToClipboard(text) {
 	}
 
 	document.body.removeChild(textArea);
+}
+String.prototype.replaceAt = function(index, replacement) {
+    return this.substring(0, index) + replacement + this.substring(index + replacement.length);
 }
