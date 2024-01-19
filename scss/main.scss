@@ -90,6 +90,7 @@ form{
                 background: #181920;
                 padding: 20px;
                 display: flex;
+                flex-wrap: wrap;
                 gap: 10px;
                 &:not(.selected){
                     display: none;

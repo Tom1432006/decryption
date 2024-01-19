@@ -94,6 +94,7 @@ form .controls .content_wrapper div {
   background: #181920;
   padding: 20px;
   display: flex;
+  flex-wrap: wrap;
   gap: 10px;
 }
 form .controls .content_wrapper div:not(.selected) {
